@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Signed rewarded-pass data is bound to this device's Keystore; restoring it elsewhere would only lock the feature. -->
+    <exclude domain="sharedpref" path="nodoro_pass.xml" />
+</full-backup-content>
