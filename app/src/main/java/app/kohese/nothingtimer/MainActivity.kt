@@ -113,7 +113,7 @@ private fun NodoroApp(timerViewModel: TimerViewModel) {
     val timerState by timerViewModel.uiState
     var showPro by rememberSaveable { mutableStateOf(false) }
     // Kept here (not inside HomeScreen) so switching tabs doesn't reset the chosen dial / phone model.
-    var showGlyphShape by rememberSaveable { mutableStateOf(false) }
+    val showGlyphShape = timerState.showGlyphShape
     val isPro = timerState.isPro
     // Free users always get dynamic color; turning it off, accents and AMOLED are Nodoro Pro.
     val effectiveDynamic = !isPro || timerState.settings.dynamicColor
@@ -176,7 +176,7 @@ private fun NodoroApp(timerViewModel: TimerViewModel) {
                         onSkip = timerViewModel::skip,
                         onDialHintDone = timerViewModel::markDialHintSeen,
                         showGlyphShape = showGlyphShape,
-                        onShowGlyphShapeChange = { showGlyphShape = it }
+                        onShowGlyphShapeChange = timerViewModel::setShowGlyphShape
                     ) }
                     AppTab.STATS -> StatsScreen(
                         state = timerState

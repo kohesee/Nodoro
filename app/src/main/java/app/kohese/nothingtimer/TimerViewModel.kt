@@ -109,7 +109,9 @@ data class TimerUiState(
     val proPending: Boolean = false,
     val proMessage: String? = null,
     val onboardingDone: Boolean = false,
-    val dialHintSeen: Boolean = false
+    val dialHintSeen: Boolean = false,
+    /** Last dial style used: false = normal circle, true = Glyph (phone) artwork. Persisted. */
+    val showGlyphShape: Boolean = false
 ) {
     val upNextLabel: String
         get() = when (phase) {
@@ -149,7 +151,8 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
                 ownsPro = pro.ownsPro,
                 fullVersion = monetization.isFullVersion,
                 onboardingDone = preferences.getBoolean("onboarding_done", false),
-                dialHintSeen = preferences.getBoolean("dial_hint_seen", false)
+                dialHintSeen = preferences.getBoolean("dial_hint_seen", false),
+                showGlyphShape = preferences.getBoolean("show_glyph_shape", false)
             )
         }
     )
@@ -310,6 +313,12 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         if (uiState.value.dialHintSeen) return
         preferences.edit().putBoolean("dial_hint_seen", true).apply()
         uiState.value = uiState.value.copy(dialHintSeen = true)
+    }
+
+    fun setShowGlyphShape(show: Boolean) {
+        if (uiState.value.showGlyphShape == show) return
+        preferences.edit().putBoolean("show_glyph_shape", show).apply()
+        uiState.value = uiState.value.copy(showGlyphShape = show)
     }
 
     /** Wipes every recorded statistic (daily and lifetime) and the session counter. */
@@ -717,51 +726,3 @@ private fun loadStats(preferences: SharedPreferences): StatsSummary {
         lifetimeSessions = lifetimeSessions
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
